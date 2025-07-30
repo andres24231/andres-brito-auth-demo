@@ -21,7 +21,11 @@ class SecurityConfig {
                         "/api/health"
                     ).permitAll()
                     .requestMatchers("/api/admin/**").hasRole("ADMINS")
+                    .requestMatchers("/api/secure-data").hasAnyRole("ADMINS", "SUPERUSERS")
+                    .requestMatchers("/api/access").hasAnyRole("SUPERUSERS", "USERS")
+                    .requestMatchers("/api/controls").hasAnyRole("ADMINS", "USERS")
                     .anyRequest().authenticated()
+
             }
             .oauth2ResourceServer { oauth2 ->
                 oauth2.jwt { Customizer.withDefaults<JwtDecoder>() }
